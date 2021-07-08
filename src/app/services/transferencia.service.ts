@@ -7,30 +7,27 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TransferenciaService {
-private listaTransferencia: any[];
-private url = 'http://localhost:3000/transferencias';
+private url = "http://localhost:3000/transferencias";
 
-constructor(private httpClient: HttpClient) {
-  this.listaTransferencia = [];
- }
-
- get transferencias() {
-   return this.listaTransferencia;
- }
+constructor(private httpClient: HttpClient) {}
 
  todas(): Observable<Transferencia[]>{
    return this.httpClient.get<Transferencia[]>(this.url)
  }
 
- adicionar(transferencia: Transferencia): Observable<Transferencia> {
-  this.hidratar(transferencia);
+ adicionar(transferencias: Transferencia): Observable<Transferencia> {
+  this.hidratar(transferencias);
 
-  return this.httpClient.post<Transferencia>(this.url, transferencia);
+  return this.httpClient.post<Transferencia>(this.url, transferencias)
 
  }
 
- private hidratar(transferencia: any) {
-   transferencia.data = new Date();
+ private hidratar(transferencias: any) {
+   transferencias.data = new Date();
+ }
+
+ remover(transferencias: Transferencia): Observable<Transferencia> {
+   return this.httpClient.delete<Transferencia>(this.url + "/" + transferencias.id)
  }
 
 }
